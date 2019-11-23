@@ -1,10 +1,8 @@
-using System.Linq;
 using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using carpoolapp.BLL.Interfaces;
 using carpoolapp.BLL.Resources;
-using carpoolapp.BLL.Services.Communication;
 using carpoolapp.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
