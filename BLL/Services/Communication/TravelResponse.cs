@@ -2,9 +2,9 @@ using carpoolapp.Models;
 
 namespace carpoolapp.BLL.Services.Communication {
     public class TravelResponse : BaseResponse {
-        public Travel _travel { get; private set; }
+        public Travel Travel { get; private set; }
         public TravelResponse (bool success, string message, Travel travel) : base (success, message) {
-            _travel = travel;
+            Travel = travel;
         }
         /// <summary>
         /// Creates a success response

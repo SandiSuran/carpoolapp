@@ -9,6 +9,7 @@ namespace carpoolapp.BLL.Mapping
         public ResourceToModelProfile()
         {
             CreateMap<TravelResource,Travel>();
+            CreateMap<SaveTravelResource,Travel>();
         }
     }
 }
