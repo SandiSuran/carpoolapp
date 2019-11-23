@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using carpoolapp.BLL.Interfaces;
@@ -15,13 +16,16 @@ namespace carpoolapp.Controllers {
 
         private readonly ILogger<TravelController> _logger;
         private readonly ITravelService _service;
+        private readonly IEmployeeService _emplService;
         private readonly IMapper _mapper;
 
-        public TravelController (ILogger<TravelController> logger, ITravelService service, IMapper mapper) {
+        public TravelController (ILogger<TravelController> logger, ITravelService service, IMapper mapper, IEmployeeService emplService) {
             _logger = logger;
             _service = service;
             _mapper = mapper;
+            _emplService = emplService;
         }
+
         [HttpGet]
         public async Task<IEnumerable<TravelResource>> GetAllAsync () {
             var travels = await _service.ListAsync ();
@@ -29,18 +33,23 @@ namespace carpoolapp.Controllers {
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostAsync ([FromBody] SaveTravelResource resource) { 
-            if(!ModelState.IsValid)
-                return BadRequest(ModelState.GetErrorMessages());
+        public async Task<IActionResult> PostAsync ([FromBody] SaveTravelResource resource) {
+            if (!ModelState.IsValid)
+                return BadRequest (ModelState.GetErrorMessages ());
 
-            var travel = _mapper.Map<SaveTravelResource, Travel>(resource);
-            var result = await _service.SaveAsync(travel);
+            var travel = _mapper.Map<SaveTravelResource, Travel> (resource);
+            var travelResult = await _service.SaveAsync (travel);
+            var toggleTravelEmpResult = await _emplService.ToggleTravelEmployees (resource.EmployeeIdList, travelResult.Travel.ID);
+            
+            if (!travelResult.Success)
+                return BadRequest (travelResult.Message);
 
-            if(!result.Success)
-                return BadRequest(result.Message);
+            if (!toggleTravelEmpResult.Success)
+                return BadRequest (toggleTravelEmpResult.Message);
 
-            var travelResource = _mapper.Map<Travel, TravelResource>(result.Travel);
-            return Ok(travelResource);
+            var travelResource = _mapper.Map<Travel, TravelResource> (travelResult.Travel);
+            return Ok (travelResource);
         }
+
     }
 }

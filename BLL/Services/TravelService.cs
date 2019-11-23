@@ -17,15 +17,7 @@ namespace carpoolapp.BLL.Services {
             _mapper = mapper;
         }
 
-        public Task<TravelResponse> Create (TravelResource travel) {
-            throw new NotImplementedException ();
-        }
-
-        public Task<TravelResponse> Delete (int travelId) {
-            throw new NotImplementedException ();
-        }
-
-        public Task<Travel> GetTravel (int id) {
+        public Task<TravelResponse> DeleteAsync (int travelId) {
             throw new NotImplementedException ();
         }
 
@@ -50,6 +42,29 @@ namespace carpoolapp.BLL.Services {
                 return new TravelResponse ($"An error occurred when saving the travel: {ex.Message}");
             }
 
+        }
+
+        public async Task<TravelResponse> UpdateAsync(Travel travel, int travelId)
+        {
+            var existingTravel = await _db.Travels.FindAsync(travelId);
+
+            if (existingTravel == null)
+                return new TravelResponse("Travel not found.");
+
+                _mapper.Map(existingTravel,travel);
+
+            try
+            {
+                _db.Update(existingTravel);
+                await _db.SaveChangesAsync();
+
+                return new TravelResponse(existingTravel);
+            }
+            catch (Exception ex)
+            {
+                // Do some logging stuff
+                return new TravelResponse($"An error occurred when updating the travel: {ex.Message}");
+            }
         }
     }
 }

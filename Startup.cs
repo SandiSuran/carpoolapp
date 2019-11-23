@@ -30,6 +30,7 @@ namespace carpoolapp
             services.AddAutoMapper(typeof(ModelToResourceProfile));
             services.AddControllersWithViews();
             services.AddScoped<ITravelService, TravelService>();
+            services.AddScoped<IEmployeeService, EmployeeService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

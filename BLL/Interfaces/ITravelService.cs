@@ -9,12 +9,11 @@ namespace carpoolapp.BLL.Interfaces
 {
     public interface ITravelService
     {
-         Task<TravelResponse> Create(TravelResource travel);
-         Task<TravelResponse> Delete(int travelId);
+         
+         Task<TravelResponse> DeleteAsync(int travelId);
+         Task<TravelResponse> UpdateAsync(Travel travel, int travelId);
          Task<TravelResponse> SaveAsync(Travel travel);
-         Task<Travel> GetTravel(int id);
-
-         Task<IEnumerable<TravelResource>> ListTravelsForTimePeriod(string month);
          Task<IEnumerable<TravelResource>> ListAsync();
+         Task<IEnumerable<TravelResource>> ListTravelsForTimePeriod(string month);
     }
 }
