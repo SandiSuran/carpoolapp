@@ -5,16 +5,16 @@ export class FetchData extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { forecasts: [], loading: true };
+    this.state = { travels: [], loading: true };
   }
 
   componentDidMount() {
-    this.populateWeatherData();
+    this.populateTravelData();
   }
 
-  static renderForecastsTable(forecasts) {
+  static renderTravelsTable(travels) {
     return (
-      <table className='table table-striped' aria-labelledby="tabelLabel">
+      <table className='table table-striped' aria-labelledby="tableLabel">
         <thead>
           <tr>
             <th>Date</th>
@@ -24,12 +24,13 @@ export class FetchData extends Component {
           </tr>
         </thead>
         <tbody>
-          {forecasts.map(forecast =>
-            <tr key={forecast.date}>
-              <td>{forecast.date}</td>
-              <td>{forecast.temperatureC}</td>
-              <td>{forecast.temperatureF}</td>
-              <td>{forecast.summary}</td>
+          {travels.map(travel =>
+            <tr key={travel.Id}>
+              <td>{travel.carLicensePlate}</td>
+              <td>{travel.startLocation}</td>
+              <td>{travel.endLocation}</td>
+              <td>{travel.startDate}</td>
+              <td>{travel.endDate}</td>
             </tr>
           )}
         </tbody>
@@ -40,20 +41,19 @@ export class FetchData extends Component {
   render() {
     let contents = this.state.loading
       ? <p><em>Loading...</em></p>
-      : FetchData.renderForecastsTable(this.state.forecasts);
+      : FetchData.renderTravelsTable(this.state.travels);
 
     return (
       <div>
-        <h1 id="tabelLabel" >Weather forecast</h1>
-        <p>This component demonstrates fetching data from the server.</p>
+        <h1 id="tableLabel" >Carpool Travels</h1>
         {contents}
       </div>
     );
   }
 
-  async populateWeatherData() {
+  async populateTravelData() {
     const response = await fetch('travel');
     const data = await response.json();
-    this.setState({ forecasts: data, loading: false });
+    this.setState({ travels: data, loading: false });
   }
 }
