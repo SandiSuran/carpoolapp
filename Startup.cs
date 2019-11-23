@@ -1,10 +1,16 @@
+using carpoolapp.BLL.Interfaces;
+using carpoolapp.BLL.Services;
+using carpoolapp.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AutoMapper;
+using carpoolapp.BLL.Mapping;
 
 namespace carpoolapp
 {
@@ -20,8 +26,10 @@ namespace carpoolapp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddDbContext<Context>(options => options.UseSqlite(Configuration["ConnectionStrings:Development"]));
+            services.AddAutoMapper(typeof(ModelToResourceProfile));
             services.AddControllersWithViews();
+            services.AddScoped<ITravelService, TravelService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

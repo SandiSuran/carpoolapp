@@ -6,6 +6,8 @@ namespace carpoolapp.Models {
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Travel> Travels { get; set; }
         public virtual DbSet<TravelEmployees> TravelEmployees { get; set; }
+
+        public Context(DbContextOptions<Context> options) : base(options) { }
         protected override void OnConfiguring (DbContextOptionsBuilder options) => options.UseSqlite ("Data Source=carpool.db");
 
         protected override void OnModelCreating (ModelBuilder modelBuilder) {

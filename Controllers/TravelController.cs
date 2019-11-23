@@ -1,8 +1,9 @@
-﻿using System;
+﻿
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using carpoolapp.Models;
+using carpoolapp.BLL.Interfaces;
+using carpoolapp.BLL.Resources;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,17 +13,16 @@ namespace carpoolapp.Controllers {
     public class TravelController : ControllerBase {
 
         private readonly ILogger<TravelController> _logger;
+        private readonly ITravelService _service;
 
-        public TravelController (ILogger<TravelController> logger) {
+        public TravelController (ILogger<TravelController> logger, ITravelService service) {
             _logger = logger;
+            _service = service;
         }
 
-        [HttpGet]
-        public IEnumerable<Travel> Get () {
-            var newTravel = new Travel { ID = 1, StartLocation = "Zagreb", EndLocation = "Pula" };
-            var listOfTravels = new List<Travel> ();
-            listOfTravels.Add (newTravel);
-            return listOfTravels;
+        public async Task<IEnumerable<TravelResource>> GetAllAsync () {
+            var travels = await _service.ListAsync();
+            return travels;
         }
     }
 }
