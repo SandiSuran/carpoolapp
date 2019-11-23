@@ -11,7 +11,7 @@ namespace carpoolapp.BLL.Interfaces
     {
          
          Task<TravelResponse> DeleteAsync(int travelId);
-         Task<TravelResponse> UpdateAsync(Travel travel, int travelId);
+         Task<TravelResponse> UpdateAsync(int travelId, Travel travel);
          Task<TravelResponse> SaveAsync(Travel travel);
          Task<IEnumerable<TravelResource>> ListAsync();
          Task<IEnumerable<TravelResource>> ListTravelsForTimePeriod(string month);

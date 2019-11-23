@@ -51,5 +51,38 @@ namespace carpoolapp.Controllers {
             return Ok (travelResource);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveTravelResource resource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetErrorMessages());
+
+            var travel = _mapper.Map<SaveTravelResource, Travel>(resource);
+            var travelResult = await _service.UpdateAsync(id, travel);
+
+            if (!travelResult.Success)
+                return BadRequest(travelResult.Message);
+
+            var toggleTravelEmpResult = await _emplService.ToggleTravelEmployees (resource.EmployeeIdList, travelResult.Travel.ID);
+
+            if (!toggleTravelEmpResult.Success)
+                return BadRequest (toggleTravelEmpResult.Message);
+
+            var travelResource = _mapper.Map<Travel, TravelResource>(travelResult.Travel);
+            return Ok(travelResource);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var result = await _service.DeleteAsync(id);
+
+            if (!result.Success)
+                return BadRequest(result.Message);
+
+            var travelResource = _mapper.Map<Travel, TravelResource>(result.Travel);
+            return Ok(travelResource);
+        }
+
     }
 }

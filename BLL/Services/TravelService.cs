@@ -17,8 +17,21 @@ namespace carpoolapp.BLL.Services {
             _mapper = mapper;
         }
 
-        public Task<TravelResponse> DeleteAsync (int travelId) {
-            throw new NotImplementedException ();
+        public async Task<TravelResponse> DeleteAsync (int travelId) {
+            var existingTravel = await _db.Travels.FindAsync (travelId);
+
+            if (existingTravel == null)
+                return new TravelResponse ("Travel not found.");
+
+            try {
+                _db.Travels.Remove (existingTravel);
+                await _db.SaveChangesAsync();
+
+                return new TravelResponse (existingTravel);
+            } catch (Exception ex) {
+                // Do some logging stuff
+                return new TravelResponse ($"An error occurred when deleting the travel: {ex.Message}");
+            }
         }
 
         public async Task<IEnumerable<TravelResource>> ListAsync () {
@@ -44,26 +57,22 @@ namespace carpoolapp.BLL.Services {
 
         }
 
-        public async Task<TravelResponse> UpdateAsync(Travel travel, int travelId)
-        {
-            var existingTravel = await _db.Travels.FindAsync(travelId);
+        public async Task<TravelResponse> UpdateAsync (int travelId, Travel travel) {
+            var existingTravel = await _db.Travels.FindAsync (travelId);
 
             if (existingTravel == null)
-                return new TravelResponse("Travel not found.");
+                return new TravelResponse ("Travel not found.");
 
-                _mapper.Map(existingTravel,travel);
+            _mapper.Map (existingTravel, travel);
 
-            try
-            {
-                _db.Update(existingTravel);
-                await _db.SaveChangesAsync();
+            try {
+                _db.Update (existingTravel);
+                await _db.SaveChangesAsync ();
 
-                return new TravelResponse(existingTravel);
-            }
-            catch (Exception ex)
-            {
+                return new TravelResponse (existingTravel);
+            } catch (Exception ex) {
                 // Do some logging stuff
-                return new TravelResponse($"An error occurred when updating the travel: {ex.Message}");
+                return new TravelResponse ($"An error occurred when updating the travel: {ex.Message}");
             }
         }
     }
