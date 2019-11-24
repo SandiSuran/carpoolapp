@@ -9,6 +9,8 @@ namespace carpoolapp.BLL.Mapping
          public ModelToResourceProfile()
         {
             CreateMap<Travel, TravelResource>();
+            CreateMap<Employee, EmployeeResource>();
+            CreateMap<Car, CarResource>();
         }
     }
 }

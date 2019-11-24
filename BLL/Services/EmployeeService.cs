@@ -2,16 +2,27 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using carpoolapp.BLL.Interfaces;
+using carpoolapp.BLL.Resources;
 using carpoolapp.BLL.Services.Communication;
 using carpoolapp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace carpoolapp.BLL.Services {
 
     public class EmployeeService : IEmployeeService {
         private readonly Context _db;
-        public EmployeeService (Context db) {
+        private readonly IMapper _mapper;
+        public EmployeeService (Context db, IMapper mapper) {
             _db = db;
+            _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<EmployeeResource>> ListAsync()
+        {
+            var modelList = await _db.Employees.ToListAsync ();
+            return _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeResource>> (modelList);
         }
 
         public async Task<TravelEmployeesResponse> ToggleTravelEmployees (IEnumerable<int> employeeIds, int travelId) {
