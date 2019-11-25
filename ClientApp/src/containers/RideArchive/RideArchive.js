@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Aux from '../../hoc/Aux/Aux';
+import Auxillary from '../../hoc/Auxillary/Auxillary';
 
 class RideArchive extends Component {
     state = {
@@ -45,10 +45,10 @@ class RideArchive extends Component {
             ? <p><em>Loading...</em></p>
             : RideArchive.renderTravelsTable(this.state.travels);
         return(
-            <Aux>
+            <Auxillary>
                 <h1 id="tableLabel" >Carpool Travels</h1>
                 {contents}
-            </Aux>
+            </Auxillary>
         );
         
     }

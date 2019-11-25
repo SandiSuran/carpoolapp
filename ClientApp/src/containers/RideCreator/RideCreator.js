@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import Aux from "../../hoc/Aux/Aux";
+import Auxillary from "../../hoc/Auxillary/Auxillary";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 
@@ -92,7 +92,7 @@ class RideCreator extends Component {
     } = this.state;
 
     return (
-      <Aux>
+      <Auxillary>
         <div className={classes.NewRide}>
           <h1>New Ride</h1>
           <label>Start Location</label>
@@ -144,7 +144,7 @@ class RideCreator extends Component {
           </select>
           <button onClick={this.postDataHandler}>Create a carpool ride</button>
         </div>
-      </Aux>
+      </Auxillary>
     );
   }
 }
