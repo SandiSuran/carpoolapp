@@ -10,6 +10,7 @@
         React
 
 ## How to Use
-In root folder execute dotnet run command
+First In root folder execute "dotnet ef database update" to seed and create a database
+Second execute "dotnet run" command,
 This will start both server and client.
 
